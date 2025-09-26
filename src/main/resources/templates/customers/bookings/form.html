@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bokning</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Boka Rum</h1>
+
+  <!-- Visa felmeddelande om något gick fel -->
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+  <!-- Formulär för att välja datum för att söka lediga rum -->
+  <form th:action="@{/bookings/new}" th:object="${booking}" method="post">
+    <div class="mb-3">
+      <label for="checkInDate" class="form-label">Incheckningsdatum</label>
+      <input type="date" th:field="*{checkInDate}" id="checkInDate" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="checkOutDate" class="form-label">Utcheckningsdatum</label>
+      <input type="date" th:field="*{checkOutDate}" id="checkOutDate" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sök lediga rum</button>
+  </form>
+
+  <hr/>
+
+  <!-- Om rum finns, visa formulär för att boka -->
+  <div th:if="${rooms}">
+    <form th:action="@{/bookings/save}" th:object="${booking}" method="post">
+      <div class="mb-3">
+        <label for="customer" class="form-label">Välj kund</label>
+        <select th:field="*{customerId}" id="customer" class="form-select" required>
+          <option value="" disabled selected>-- Välj kund --</option>
+          <option th:each="cust : ${customers}"
+                  th:value="${cust.id}"
+                  th:text="${cust.firstName + ' ' + cust.lastName}"></option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="room" class="form-label">Välj rum</label>
+        <select th:field="*{roomId}" id="room" class="form-select" required>
+          <option value="" disabled selected>-- Välj rum --</option>
+          <option th:each="room : ${rooms}"
+                  th:value="${room.id}"
+                  th:text="${'Rum ' + room.roomNumber + ' - ' + room.roomType}"></option>
+        </select>
+      </div>
+
+      <!-- Behåll övriga fält via hidden inputs -->
+      <input type="hidden" th:field="*{checkInDate}" />
+      <input type="hidden" th:field="*{checkOutDate}" />
+
+
+      <button type="submit" class="btn btn-success">Boka rum</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

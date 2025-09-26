@@ -1,0 +1,65 @@
+<!-- src/main/resources/templates/customer/home.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kund - Startsida</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-top: 40px;
+            color: #2c3e50;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 50px;
+            max-width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        nav ul li {
+            display: block;
+            margin: 10px 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            padding: 15px 25px;
+            background-color: #3498db;
+            color: white;
+            font-size: 1.2em;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+<h1>Pensionat kunders registrering system</h1>
+
+<nav>
+    <ul>
+        <li><a th:href="@{/customers}">Kunder</a></li>
+        <li><a th:href="@{/bookings}">Bokningar</a></li>
+        <li><a th:href="@{/rooms}">Rum</a></li>
+        <li><a th:href="@{/customers/form}">Registrera kund</a></li>
+        <li><a th:href="@{/rooms/new}">Registrera rum</a></li>
+        <li><a th:href="@{/bookings/new}">Registrera bokning</a></li>
+    </ul>
+</nav>
+</body>
+</html>

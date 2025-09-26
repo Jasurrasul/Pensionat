@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Boka rum</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .form-label {
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body class="container mt-5">
+
+<div class="card">
+  <div class="card-header" th:text="${booking.id == null} ? 'Boka ett rum' : 'Ändra bokning'"></div>
+  <div class="card-body">
+
+    <!-- Felmeddelande -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:action="@{/bookings/save}" th:object="${booking}" method="post">
+
+      <table class="table table-borderless">
+        <tbody>
+
+        <!-- Kundval -->
+        <tr th:if="${booking.customerId == null}">
+          <td><label class="form-label">Välj kund:</label></td>
+          <td>
+            <select class="form-select" th:field="*{customerId}" required>
+              <option th:each="customer : ${customers}"
+                      th:value="${customer.id}"
+                      th:text="${customer.firstName} + ' ' + ${customer.lastName}">
+              </option>
+            </select>
+          </td>
+        </tr>
+
+        <tr th:if="${booking.customerId != null}">
+          <td><label class="form-label">Kund:</label></td>
+          <td>
+            <input type="hidden" th:field="*{customerId}" />
+            <p class="form-control-plaintext" th:text="${booking.customerFirstName} + ' ' + ${booking.customerLastName}"></p>
+          </td>
+        </tr>
+
+        <!-- Rumsval -->
+        <tr>
+          <td><label class="form-label">Välj rum:</label></td>
+          <td>
+            <select class="form-select" th:field="*{roomId}" required>
+              <option th:each="room : ${rooms}"
+                      th:value="${room.id}"
+                      th:text="'Rum ' + ${room.roomNumber} + ' - ' + ${room.roomType}">
+              </option>
+            </select>
+          </td>
+        </tr>
+
+        <!-- Incheckningsdatum -->
+        <tr>
+          <td><label class="form-label">Incheckning:</label></td>
+          <td>
+            <input type="date" class="form-control" th:field="*{checkInDate}" required />
+          </td>
+        </tr>
+
+        <!-- Utcheckningsdatum -->
+        <tr>
+          <td><label class="form-label">Utcheckning:</label></td>
+          <td>
+            <input type="date" class="form-control" th:field="*{checkOutDate}" required />
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary"
+                th:text="${booking.id == null} ? 'Boka' : 'Spara ändringar'"></button>
+        <a th:href="@{/bookings}" class="btn btn-secondary">Tillbaka</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
